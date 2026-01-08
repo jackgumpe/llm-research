@@ -1,0 +1,99 @@
+{
+  "objective": {
+    "role": "Lead Technical Architect",
+    "goal": "Conduct a full technical review of the DeepSeek-OCR integration inside the llm-research multi-agent system, identify every blocker to Production/Market readiness, and synthesize a concrete Gap Closure Plan."
+  },
+  "context": {
+    "project_root": "C:/Dev/llm-research",
+    "reference_files": [
+      "agents/proposals/deepseek_ocr_amendments.json",
+      "agents/ocr_agent.py",
+      "deepseek-ocr/scripts/environment.ps1",
+      "deepseek-ocr/scripts/run_ocr.py",
+      "deepseek-ocr/scripts/benchmark_quantizations.ps1",
+      "deepseek-ocr/models/config.json",
+      "deepseek-ocr/models/manifest.json",
+      "src/comms/agent_registry.py",
+      "src/comms/multi_agent_messenger.py"
+    ],
+    "hardware_constraint": "RTX 2070 (8 GB VRAM, CUDA 11.8)",
+    "production_ready": "Fully integrated, dependencies managed, secrets secured, deployable to a fresh machine without manual intervention.",
+    "market_ready": "Meets KPIs (CER ≤ 2%, latency < 30s/page) and offers ≤3-step documented setup for external researchers."
+  },
+  "tribunal": {
+    "round_limit": 30,
+    "phases": [
+      "Phase 1: Assessment (agents audit files vs. their mandate)",
+      "Phase 2: Debate (agents cross-challenge assumptions and evidence)",
+      "Phase 3: Synthesis (negotiate final solutions and owners)"
+    ],
+    "roster": [
+      { "name": "System Architect", "scope": "Config portability, path management, API contracts" },
+      { "name": "ML Ops Engineer", "scope": "Model lifecycle, quantization, profiling, benchmark_suite.py" },
+      { "name": "DevOps/SRE", "scope": "Redis/docker-compose, environment.ps1 idempotency, setup.ps1" },
+      { "name": "Security Analyst", "scope": "HF token vault, manifest provenance, audit logging" },
+      { "name": "Product Manager", "scope": "User journey, documentation, market readiness narrative" },
+      { "name": "QA Engineer", "scope": "Acceptance tests, CER/latency metrics, benchmark automation" },
+      { "name": "Integration Specialist", "scope": "Agent registry wiring, MultiAgentMessenger integration, ocr_agent discoverability" }
+    ]
+  },
+  "debate_rules": {
+    "procedural": [
+      "Affirmative (proposed change) speaks first and last; rebuttal order is Neg, Aff, Neg, Aff.",
+      "Plans must stay topical: focus on DeepSeek-OCR lifecycle (download, quantize, validate).",
+      "No new constructive arguments in rebuttals."
+    ],
+    "evidence": [
+      "All claims must cite code or docs (e.g., environment.ps1 line counts, config.json path issues, benchmark_quantizations limitations).",
+      "Shared evidence is fair game; once a mock-up or script excerpt is introduced, either side may use it."
+    ],
+    "interaction": [
+      "Cross-examinations must reference the preceding speech and target implementation specifics (paths, modules, scripts).",
+      "Mediator judges only on presented material; prior assumptions are irrelevant."
+    ]
+  },
+  "competency_framework": [
+    {
+      "id": "TECH-ARCH",
+      "name": "Technical Architecture",
+      "focus": "Does the proposal satisfy the lifecycle (download/quantize/validate) and integrate cleanly with config.json + manifest.json?"
+    },
+    {
+      "id": "EVIDENCE",
+      "name": "Evidence & Validation",
+      "focus": "Quality of references to environment.ps1, benchmark scripts, pre_flight_checks, etc."
+    },
+    {
+      "id": "IMPACT",
+      "name": "Strategic Impact",
+      "focus": "Trade-offs: speed vs. maintainability vs. integration cost."
+    },
+    {
+      "id": "LOGIC",
+      "name": "Logical Rigor",
+      "focus": "Avoids unsupported assumptions; connects design choices to measurable outcomes."
+    }
+  ],
+  "required_artifacts": [
+    "Executive Summary (system state + overall verdict)",
+    "Critical Gap Analysis table (ID, description, file references, severity)",
+    "Technical Specification (tasks referencing scripts, modules, config updates)",
+    "Implementation Roadmap (Phase 1: Model Assets, Phase 2: Integration, Phase 3: Production Hardening, Phase 4: Validation)",
+    "Next Immediate Action list (first scripts/files to touch post-debate)"
+  ],
+  "success_metrics": [
+    "Quantized models generated and registered in manifest.json",
+    "Benchmark suite logs CER and VRAM; CI enforces thresholds",
+    "ocr_agent wired to real AgentRegistry/MultiAgentMessenger",
+    "setup.ps1 installs Redis/docker-compose and runs environment.ps1 idempotently"
+  ],
+  "final_deliverable": {
+    "name": "DeepSeek-OCR Gap Closure Plan",
+    "format": "Markdown document appended to agents/proposals/",
+    "decision_criteria": [
+      "Does the winning proposal satisfy Production + Market definitions?",
+      "Are all blockers mapped to explicit owners and files?",
+      "Is there a measurable test/metric for each critical task?"
+    ]
+  }
+}
