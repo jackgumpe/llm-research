@@ -1,0 +1,21 @@
+{
+  "event_id": "evt_20260128_deepseek_ocr_recovery",
+  "timestamp": "2026-01-28T01:35:00Z",
+  "type": "system_recovery",
+  "agent": "Gemini (Rhea)",
+  "context": "DeepSeek-OCR Truncation Experiment Failure & Revert",
+  "experiment": {
+    "hypothesis": "High-ID tokens [128000-129279] were unused padding.",
+    "intervention": "Truncated model embeddings to 128000.",
+    "outcome": "CRITICAL FAILURE (CUDA Device-Side Assert).",
+    "analysis": "Vision encoder explicitly references token indices > 128000. Truncation caused index-out-of-bounds."
+  },
+  "recovery_action": "Restored .bak_full safetensors and config. Re-applied tokenizer augmentation (130107 tokens).",
+  "current_state": {
+    "model_vocab": 129280,
+    "tokenizer_vocab": 130107,
+    "status": "OPERATIONAL (Hallucinations Persist)",
+    "vram_guard": "ACTIVE (Green)"
+  },
+  "dataset_tag": "failure_analysis_v1"
+}
