@@ -1,0 +1,183 @@
+{
+  "timestamp": "2026-01-27T22:08:32.452459",
+  "memory_total_gb": 15.79,
+  "memory_available_gb": 1.86,
+  "cpu_percent": 5.6,
+  "flagged_processes": [
+    {
+      "pid": 8168,
+      "name": "chrome.exe",
+      "memory_mb": 819.99
+    },
+    {
+      "pid": 7464,
+      "name": "chrome.exe",
+      "memory_mb": 544.76
+    },
+    {
+      "pid": 2200,
+      "name": "chrome.exe",
+      "memory_mb": 463.31
+    },
+    {
+      "pid": 19812,
+      "name": "chrome.exe",
+      "memory_mb": 450.64
+    },
+    {
+      "pid": 20204,
+      "name": "chrome.exe",
+      "memory_mb": 270.77
+    },
+    {
+      "pid": 22752,
+      "name": "msedge.exe",
+      "memory_mb": 194.11
+    },
+    {
+      "pid": 23184,
+      "name": "chrome.exe",
+      "memory_mb": 183.11
+    },
+    {
+      "pid": 19764,
+      "name": "chrome.exe",
+      "memory_mb": 176.29
+    },
+    {
+      "pid": 25020,
+      "name": "chrome.exe",
+      "memory_mb": 153.54
+    },
+    {
+      "pid": 20328,
+      "name": "chrome.exe",
+      "memory_mb": 151.9
+    },
+    {
+      "pid": 24848,
+      "name": "chrome.exe",
+      "memory_mb": 149.0
+    },
+    {
+      "pid": 10044,
+      "name": "chrome.exe",
+      "memory_mb": 148.06
+    },
+    {
+      "pid": 25376,
+      "name": "chrome.exe",
+      "memory_mb": 142.82
+    },
+    {
+      "pid": 24916,
+      "name": "chrome.exe",
+      "memory_mb": 141.72
+    },
+    {
+      "pid": 15736,
+      "name": "chrome.exe",
+      "memory_mb": 136.69
+    },
+    {
+      "pid": 29280,
+      "name": "chrome.exe",
+      "memory_mb": 132.6
+    },
+    {
+      "pid": 19024,
+      "name": "msedge.exe",
+      "memory_mb": 97.27
+    },
+    {
+      "pid": 5552,
+      "name": "chrome.exe",
+      "memory_mb": 89.24
+    },
+    {
+      "pid": 20364,
+      "name": "chrome.exe",
+      "memory_mb": 74.3
+    },
+    {
+      "pid": 20404,
+      "name": "chrome.exe",
+      "memory_mb": 65.61
+    },
+    {
+      "pid": 7012,
+      "name": "chrome.exe",
+      "memory_mb": 62.95
+    },
+    {
+      "pid": 25068,
+      "name": "msedge.exe",
+      "memory_mb": 60.4
+    },
+    {
+      "pid": 4900,
+      "name": "msedge.exe",
+      "memory_mb": 51.36
+    },
+    {
+      "pid": 18120,
+      "name": "msedge.exe",
+      "memory_mb": 45.67
+    },
+    {
+      "pid": 14876,
+      "name": "chrome.exe",
+      "memory_mb": 44.28
+    },
+    {
+      "pid": 23404,
+      "name": "msedge.exe",
+      "memory_mb": 34.87
+    },
+    {
+      "pid": 3680,
+      "name": "chrome.exe",
+      "memory_mb": 30.98
+    },
+    {
+      "pid": 20460,
+      "name": "chrome.exe",
+      "memory_mb": 29.31
+    },
+    {
+      "pid": 27348,
+      "name": "msedge.exe",
+      "memory_mb": 27.47
+    },
+    {
+      "pid": 27048,
+      "name": "python.exe",
+      "memory_mb": 26.91
+    },
+    {
+      "pid": 21076,
+      "name": "chrome.exe",
+      "memory_mb": 24.37
+    },
+    {
+      "pid": 24044,
+      "name": "msedge.exe",
+      "memory_mb": 22.57
+    },
+    {
+      "pid": 26240,
+      "name": "python.exe",
+      "memory_mb": 18.14
+    },
+    {
+      "pid": 23616,
+      "name": "msedge.exe",
+      "memory_mb": 14.17
+    },
+    {
+      "pid": 19932,
+      "name": "chrome.exe",
+      "memory_mb": 11.61
+    }
+  ]
+}
