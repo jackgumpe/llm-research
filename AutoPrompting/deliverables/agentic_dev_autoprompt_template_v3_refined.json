@@ -1,0 +1,263 @@
+{
+  "schema_version": "1.2.1",
+  "prompt_name": "agentic_dev_autoprompt_template_v3_refined",
+  "metadata": {
+    "id": "req_2026-01-28T12:55:00-05:00_03",
+    "datetime": "2026-01-28T12:55:00-05:00",
+    "user": {
+      "id": "J"
+    },
+    "source": {
+      "client": "codex-cli",
+      "mode": "json-prompt"
+    },
+    "change_log": [
+      "v3: added llm-research corpus context (size, purpose, subprojects)",
+      "v3: added crash attribution triage (VLM vs local image generator vs Unity/HDRP integration)",
+      "v3: added Windows-friendly log search constraints and output contracts",
+      "v3r1: tightened log-first evidence, crash attribution confidence, VRAM budgeting guardrails, and validation outputs",
+      "v3r2: added Windows resource sanitization (close browsers/heavy RAM apps) before log scanning"
+    ]
+  },
+  "workspace": {
+    "root": "C:\\Dev\\llm-research",
+    "notes": [
+      "Workspace contains a very large corpus (50k+ pages) of LLM research and DnD official ebooks/manuals.",
+      "Workspace supports subprojects: HDRP, Unity integration, Codex+Gemini control bridge, context hierarchy management, and long-horizon optimization techniques.",
+      "DO NOT attempt to ingest or summarize the entire corpus; focus strictly on crash-relevant logs unless explicitly asked.",
+      "Focus strictly on crash-relevant data under inputs.logs.path unless supervisor authorizes broader corpus access."
+    ]
+  },
+  "inputs": {
+    "logs": {
+      "path": "C:\\Dev\\llm-research\\AutoPrompting\\logs",
+      "include_globs": [
+        "**/*.log",
+        "**/*.txt",
+        "**/*.jsonl",
+        "**/*.trace",
+        "**/*.out",
+        "**/*.err"
+      ],
+      "max_files": 400,
+      "max_bytes_total": 104857600,
+      "required_first_step": true
+    }
+  },
+  "task": {
+    "intent": "complex_debugging_multi_llm_multi_agent_autoprompting",
+    "context": {
+      "incident_summary": "Gemini and Codex crashed during a GPU-intensive run; VRAM surpassed soft-coded VRAM limits. Unclear whether this was VLM training, a local image generator pipeline, or Unity/HDRP integration; logs must disambiguate.",
+      "primary_question": "Decide which component (VLM_TRAINING, LOCAL_IMAGE_GENERATOR, UNITY_HDRP_INTEGRATION, UNKNOWN) triggered the crash and why the VRAM guardrails failed.",
+      "suspected_failure_class": [
+        "cuda_out_of_memory",
+        "vram_soft_limit_not_enforced",
+        "allocator_fragmentation",
+        "illegal_memory_access",
+        "watchdog_reset",
+        "driver_reset",
+        "process_termination"
+      ]
+    },
+    "request": {
+      "primary": "triage_then_fix_analysis",
+      "secondary": [
+        "debug",
+        "mock_test"
+      ],
+      "background": {
+        "process": "bot_working_with_recording_layer",
+        "purpose": "create_datasets"
+      }
+    },
+    "acceptance_criteria": [
+      "Execute a Windows resource sanitization sub-step before log scanning: capture available RAM, list high-RAM processes (e.g., browsers, GPU/AI tools, video editors), attempt to close or suspend them when possible, and record the outcome with evidence citations.",
+      "Run `preflight_scan_logs` immediately after resource sanitization; enumerate every matching log file (respecting max_files/max_bytes) and capture timestamp + log line snippets with citations in <file>:<line> form.",
+      "Build an incident timeline covering earliest precursor warnings through the first fatal error, and quote the entire first fatal block plus the earliest precursor snippets with citations.",
+      "Produce a crash attribution decision (VLM_TRAINING, LOCAL_IMAGE_GENERATOR, UNITY_HDRP_INTEGRATION, UNKNOWN) with 0-1 confidence, explicit heuristics (process names, module paths, stack symbols), cascading failure notes, and cited evidence.",
+      "Explain why the VRAM soft-coded limit failed (missing guard, bypassed check, stale measurement, async allocation, fragmentation, multi-process contention) with log evidence.",
+      "Generate a VRAM budgeting table containing peak_allocated_mb, peak_reserved_mb, free_mb_at_failure, per_batch_estimate_mb, soft_limit_mb, margin_of_error_mb, reserved_to_allocated_ratio, accumulation_strategy, guard_thresholds, and monitoring cadence.",
+      "Rank root-cause hypotheses and provide a claim->evidence mapping array where every claim references file name + matched snippet.",
+      "Propose mitigations spanning code/config/training/runtime/monitoring that directly map to hypotheses, include guardrail thresholds, and describe rollout/rollback triggers.",
+      "Provide reproducible validation steps plus mock tests (VRAM threshold breach, fragmentation spike, multi-process contention) with inputs, VRAM expectations, pass/fail criteria, telemetry to log, and rollback plan.",
+      "Never ingest or summarize the broader C:\\Dev\\llm-research corpus unless the supervisor explicitly expands scope."
+    ],
+    "deliverables": [
+      "resource_sanitization_report",
+      "incident_timeline",
+      "earliest_precursor_signals",
+      "first_fatal_error_block",
+      "crash_attribution_decision",
+      "root_cause_hypotheses_ranked",
+      "claim_evidence_matrix",
+      "vram_budgeting_and_guardrails_plan",
+      "fix_plan_patch_suggestions",
+      "monitoring_strategy",
+      "repro_steps_and_mock_tests",
+      "rollback_plan"
+    ]
+  },
+  "orchestration": {
+    "assistants": [
+      {
+        "name": "gemini",
+        "priority": "primary"
+      },
+      {
+        "name": "deepseek",
+        "priority": "secondary"
+      },
+      {
+        "name": "claude",
+        "priority": "secondary"
+      }
+    ],
+    "team_model": {
+      "structure": {
+        "supervisor": 1,
+        "senior_devs": 6
+      },
+      "role_selection": {
+        "method": "self_appointed_with_supervisor_arbitration",
+        "debate_enabled": true
+      },
+      "cross_team_comms": {
+        "allow_cross_llm_collaboration": true,
+        "allow_subagents": true
+      }
+    }
+  },
+  "workflow": {
+    "hard_ordered_steps": [
+      {
+        "step": "preflight_scan_logs",
+        "must_run_first": true,
+        "actions": [
+          "Before opening logs, capture available RAM, GPU memory headroom, and the list of running processes; flag browsers or other heavy RAM applications, attempt to close or suspend them (with user approval if needed), and record the result plus new free-RAM level.",
+          "Enumerate all files inside inputs.logs.path matching inputs.logs.include_globs (respecting max_files and max_bytes_total).",
+          "Collect timestamps, process names, module identifiers, GPU telemetry (allocated/reserved/free), NVML lines, allocator warnings, and exit codes for every warning/error.",
+          "Extract crash signatures (CUDA OOM, illegal memory access, CUDNN_STATUS*, NVML/watchdog/driver reset, process killed) and record matched lines verbatim with citations.",
+          "Identify earliest precursor warnings prior to failure and mark their positions in the timeline.",
+          "Capture the complete first fatal error block (stack trace, context, exit/return code) with citations.",
+          "Assemble a chronological incident timeline from earliest precursor through failure, listing evidence references and resource-sanitization notes."
+        ],
+        "output_contract": {
+          "resource_sanitization_report": true,
+          "timeline": true,
+          "earliest_precursors": true,
+          "top_signatures": true,
+          "first_fatal_error_block": true,
+          "evidence_citations": true
+        }
+      },
+      {
+        "step": "crash_attribution_triage",
+        "must_run_before_fixes": true,
+        "actions": [
+          "Classify the crashing component as VLM_TRAINING, LOCAL_IMAGE_GENERATOR, UNITY_HDRP_INTEGRATION, or UNKNOWN using process names, command lines, module paths, stack trace symbols, log tags, and artifact directories.",
+          "If multiple components emit fatals, identify the primary trigger (earliest fatal) and secondary cascading failures.",
+          "Assign a 0-1 confidence score per component and justify it using the collected evidence.",
+          "Document the heuristics used plus exact citations for each classification decision."
+        ],
+        "output_contract": {
+          "attribution": true,
+          "confidence": true,
+          "cascading_failures": true,
+          "evidence_citations": true
+        }
+      },
+      {
+        "step": "diagnose_vram_overrun",
+        "actions": [
+          "Estimate per-batch VRAM usage and peak allocations using logged allocated/reserved/free metrics; include differences between framework and NVML readings.",
+          "Track reserved vs allocated trends to detect fragmentation or caching allocator growth.",
+          "Locate soft-coded VRAM limits, guard thresholds, or watchdog settings mentioned in logs/config dumps; state expected vs observed trip points.",
+          "Explain why the limit failed (missing guard, measurement skew, async/off-thread allocation, fragmentation, multi-process contention) with supporting citations.",
+          "Populate the VRAM budgeting table fields defined in acceptance_criteria."
+        ],
+        "output_contract": {
+          "vram_budget_fields": true,
+          "limit_failure_mode": true,
+          "claim_evidence_matrix": true
+        }
+      },
+      {
+        "step": "propose_guardrails_and_fixes",
+        "actions": [
+          "Define concrete VRAM guardrails: warning threshold, abort threshold, adaptive microbatching/gradient accumulation plan, checkpointing/mixed precision toggles, resolution adjustments, offload targets.",
+          "Recommend allocator/runtime mitigation knobs (caching allocator caps, periodic cache flush, deterministic flags) only when supported by evidence.",
+          "Map each proposed code/config/training/runtime fix to a specific root-cause hypothesis and cite the enabling evidence.",
+          "Design a monitoring plan (e.g., NVML sampling cadence, telemetry schema, watchdog triggers) that enforces the guardrails."
+        ],
+        "output_contract": {
+          "guardrails_plan": true,
+          "fix_mapping_to_hypotheses": true,
+          "monitoring_plan": true
+        }
+      },
+      {
+        "step": "validate_and_mock_test",
+        "actions": [
+          "Specify minimal reproducible steps: component, dataset slice, batch size, resolution, precision mode, seeds, hardware assumptions, and expected VRAM envelope.",
+          "Define mock tests that simulate VRAM threshold breach, allocator fragmentation spikes, and multi-process contention scenarios.",
+          "State pass/fail criteria, telemetry checkpoints, and success metrics for each test.",
+          "Outline rollback/kill-switch procedures if new guardrails or fixes regress stability."
+        ],
+        "output_contract": {
+          "repro_plan": true,
+          "mock_tests": true,
+          "pass_fail_criteria": true,
+          "rollback_plan": true
+        }
+      }
+    ]
+  },
+  "policies": {
+    "constraints": [
+      "do_not_skip_log_scan",
+      "do_not_attempt_full_corpus_ingestion",
+      "focus_on_crash_relevant_logs_only",
+      "evidence_required_for_root_cause_claims",
+      "map_every_claim_to_evidence",
+      "no_handwavy_fixes_without_log_support",
+      "if_uncertain_return_unknown_with_next_steps",
+      "respect_shell_exec_policy"
+    ],
+    "tooling": {
+      "allow_file_read": true,
+      "allow_network": false,
+      "allow_file_write": false,
+      "allow_shell_exec": true,
+      "shell_exec_policy": {
+        "allowed_intent": "read_only_log_search_and_listing",
+        "windows_allowed_examples": [
+          "powershell -NoProfile -Command \"Get-ChildItem -Path C:\\\\Dev\\\\llm-research\\\\AutoPrompting\\\\logs -Recurse -File\"",
+          "powershell -NoProfile -Command \"Select-String -Path 'C:\\\\Dev\\\\llm-research\\\\AutoPrompting\\\\logs\\\\**' -Pattern 'CUDA|OOM|out of memory|CUDNN|NVML|watchdog|device-side|illegal memory|exit code'\""
+        ],
+        "forbidden": [
+          "delete",
+          "move",
+          "rename",
+          "edit",
+          "git commit",
+          "network calls"
+        ]
+      }
+    }
+  },
+  "telemetry": {
+    "recording": {
+      "enabled": true,
+      "dataset_name": "codex_cli_debug_runs",
+      "capture": [
+        "prompt",
+        "model_outputs",
+        "evidence_snippets",
+        "hypotheses",
+        "fix_plans",
+        "test_plans",
+        "vram_metrics"
+      ]
+    }
+  }
+}
