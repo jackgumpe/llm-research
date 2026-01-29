@@ -1,4 +1,4 @@
-# Digital Signal Capture System (Windows)
+#llm-research System (Windows)
 
 ## Setup Instructions
 
